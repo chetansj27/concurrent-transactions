@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: concurrent-transactions-postgres-phase1
+    environment:
+      POSTGRES_DB: concurrent_transactions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_phase1:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - concurrent-transactions-network
+
+volumes:
+  postgres_data_phase1:
+    driver: local
+
+networks:
+  concurrent-transactions-network:
+    driver: bridge
+
