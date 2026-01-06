@@ -40,9 +40,5 @@ spring:
 # Logging Configuration
 logging:
   level:
-    org.flywaydb: DEBUG
-    org.flywaydb.core: DEBUG
-    org.flywaydb.core.internal: DEBUG
-    com.example.concurrent_transactions.config: DEBUG
     root: INFO
 
