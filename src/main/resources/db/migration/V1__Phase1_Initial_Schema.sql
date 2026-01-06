@@ -1,33 +1,32 @@
 -- Phase 1: Initial Schema
 -- This migration creates the basic table structure for learning concurrent transactions
 
--- Accounts table for testing concurrent read/write operations
-CREATE TABLE accounts (
+-- Seats table for testing concurrent read/write operations
+CREATE TABLE seats (
     id BIGSERIAL PRIMARY KEY,
-    account_number VARCHAR(50) UNIQUE NOT NULL,
-    balance DECIMAL(19, 2) NOT NULL DEFAULT 0.00,
-    account_holder_name VARCHAR(255) NOT NULL,
+    seat_number VARCHAR(50) UNIQUE NOT NULL,
+    is_available BOOLEAN NOT NULL DEFAULT true,
+    customer_name VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Index for faster lookups
-CREATE INDEX idx_accounts_account_number ON accounts(account_number);
+CREATE INDEX idx_seats_seat_number ON seats(seat_number);
 
--- Transactions table for tracking operations
-CREATE TABLE transactions (
+-- Bookings table for tracking operations
+CREATE TABLE bookings (
     id BIGSERIAL PRIMARY KEY,
-    account_id BIGINT NOT NULL,
-    transaction_type VARCHAR(20) NOT NULL, -- 'DEPOSIT', 'WITHDRAWAL', 'TRANSFER'
-    amount DECIMAL(19, 2) NOT NULL,
-    balance_before DECIMAL(19, 2) NOT NULL,
-    balance_after DECIMAL(19, 2) NOT NULL,
-    description TEXT,
+    seat_id BIGINT NOT NULL,
+    booking_status VARCHAR(20) NOT NULL, -- 'BOOKED', 'CANCELLED'
+    customer_name VARCHAR(255) NOT NULL,
+    status_before BOOLEAN NOT NULL,
+    status_after BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_id) REFERENCES accounts(id)
+    FOREIGN KEY (seat_id) REFERENCES seats(id)
 );
 
--- Index for account transactions lookup
-CREATE INDEX idx_transactions_account_id ON transactions(account_id);
-CREATE INDEX idx_transactions_created_at ON transactions(created_at);
+-- Index for seat bookings lookup
+CREATE INDEX idx_bookings_seat_id ON bookings(seat_id);
+CREATE INDEX idx_bookings_created_at ON bookings(created_at);
 

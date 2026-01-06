@@ -1,14 +1,14 @@
 package com.example.concurrent_transactions.phase1.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record AccountResponse(
+public record SeatResponse(
         Long id,
-        String accountNumber,
-        BigDecimal balance,
-        String accountHolderName,
+        String seatNumber,
+        Boolean isAvailable,
+        String customerName,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
 }
+

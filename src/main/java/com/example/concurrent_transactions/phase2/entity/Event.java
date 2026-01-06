@@ -1,4 +1,4 @@
-package com.example.concurrent_transactions.phase1.entity;
+package com.example.concurrent_transactions.phase2.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,30 +6,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "events")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Account {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_number", unique = true, nullable = false, length = 50)
-    private String accountNumber;
+    @Column(name = "name", nullable = false, length = 255)
+    private String name;
 
-    @Column(name = "balance", nullable = false, precision = 19, scale = 2)
-    @Builder.Default
-    private BigDecimal balance = BigDecimal.ZERO;
+    @Column(name = "total_seats", nullable = false)
+    private Integer totalSeats;
 
-    @Column(name = "account_holder_name", nullable = false)
-    private String accountHolderName;
+    @Column(name = "available_seats", nullable = false)
+    private Integer availableSeats;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -41,6 +39,9 @@ public class Account {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (availableSeats == null) {
+            availableSeats = totalSeats;
+        }
     }
 
     @PreUpdate

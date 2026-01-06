@@ -1,6 +1,6 @@
 package com.example.concurrent_transactions.phase1.repository;
 
-import com.example.concurrent_transactions.phase1.entity.Account;
+import com.example.concurrent_transactions.phase1.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -11,16 +11,16 @@ import jakarta.persistence.LockModeType;
 import java.util.Optional;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-    Optional<Account> findByAccountNumber(String accountNumber);
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT a FROM Account a WHERE a.id = :id")
-    Optional<Account> findByIdWithLock(@Param("id") Long id);
+    Optional<Seat> findBySeatNumber(String seatNumber);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT a FROM Account a WHERE a.accountNumber = :accountNumber")
-    Optional<Account> findByAccountNumberWithLock(@Param("accountNumber") String accountNumber);
+    @Query("SELECT s FROM Seat s WHERE s.id = :id")
+    Optional<Seat> findByIdWithLock(@Param("id") Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT s FROM Seat s WHERE s.seatNumber = :seatNumber")
+    Optional<Seat> findBySeatNumberWithLock(@Param("seatNumber") String seatNumber);
 }
 
